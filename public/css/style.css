@@ -1,0 +1,94 @@
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container{
+    flex: 1;
+}
+.navbar{
+    height : 5rem;
+}
+
+.fa-compass{
+    color: #fe424d;
+    font-size: 2rem;
+
+}
+.logo{
+    color: #fe424d;
+    font-size: 1.5rem;
+}
+.nav-link{
+    color: antiquewhite  !important;
+}
+
+.f-info{
+    text-align: center;
+    background-color: #c8c3c3;
+    height: 8rem;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+}
+
+.f-info-links,.f-info-socials,.f-info-brand{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.f-info-links a{
+    text-decoration: none;
+    color: #222222;
+}
+
+.f-info-links a:hover{
+    text-decoration: underline;
+}
+.f-info-socials i{
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+
+.listing-card{
+    border: none !important;
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100%;
+    object-fit: cover;
+    height: 200px;
+}
+
+.card-body{
+    padding: 0;
+}
+.card-text a{
+    font-weight: 400;
+}
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: 0.2;
+    background-color: white;
+}
+
+
+.show-page-img{
+    height: 40vh !important;
+    border-radius: 1rem !important;
+ }
+
+ .btns {
+    display: flex;
+    gap: 10px;             
+    align-items: center;   
+}
+
+.btns form {
+    margin: 0;            
+}

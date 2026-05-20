@@ -1,0 +1,50 @@
+<% layout("/layout/boilerplate") -%>
+<body>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <br/>
+    <form method="POST" action="/listing/<%= listing._id %>/edit?_method=PUT" novalidate class="mb-4 needs-validation">
+          <div class="input-group mb-4">
+        <span class="input-group-text" id="basic-addon1">Title</span>
+        <input type="text" name="listing[title]" class="form-control" value="<%= listing.title %>" aria-label="title" aria-describedby="basic-addon1" required>
+         <div class="invalid-feedback">Title Required!</div>
+    </div>
+
+        <div class="input-group mb-4">
+        <span class="input-group-text" id="basic-addon1">Description</span>
+        <textarea type="text" class="form-control" name="listing[description]" aria-label="description" aria-describedby="basic-addon2" required><%= listing.description %></textarea>
+            <div class="invalid-feedback">Description Required!</div>
+    </div>
+
+        <div class="mb-4">
+        <label for="basic-url" class="form-label">Your Image URL</label>
+        <div class="input-group">
+            <input type="text" class="form-control" value="<%= listing.image.url %>" name="listing[image][url]" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+        </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 ">
+        <div class="input-group mb-4">
+        <span class="input-group-text">&#8377;</span>
+        <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control" aria-label="Amount" required>
+        <span class="input-group-text">.00</span>
+         <div class="invalid-feedback">Please enter valid price!</div>
+        </div>
+        </div>
+        <div class="col-md-8">
+        <div class="input-group mb-4">
+            <input type="text" class="form-control" name="listing[country]" value="<%= listing.country %>" aria-label="country" required>
+            <div class="invalid-feedback">Please enter valid Country!</div>
+        </div>
+        </div>
+        </div>
+         <div class="input-group mb-4">
+        <input type="text" class="form-control" name="listing[location]" value="<%= listing.location %>" aria-label="location" required>
+         <div class="invalid-feedback">Please enter valid location!</div>
+        </div>
+        <button class="btn btn-primary">Edit</button>
+         <br/>
+    </form>
+    </div>
+    </div>
+</body>
