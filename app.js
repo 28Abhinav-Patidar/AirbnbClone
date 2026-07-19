@@ -83,15 +83,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get("/demouser", async (req, res) => {
-    let fakeuser = new User({
-        email: "abhinav@gmail.com",
-        username: "Abhinav1223"
-
-    });
-    let reguser = await User.register(fakeuser, "nahipata");
-    res.send(reguser);
-});
 
 
 app.use("/listing", listingrouter);
@@ -100,6 +91,11 @@ app.use("/", userrouter);
 
 app.get("/favicon.ico", (req, res) => {
     res.status(204).end();
+});
+
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.originalUrl}`);
+    next();
 });
 
 app.use((req, res, next) => {
