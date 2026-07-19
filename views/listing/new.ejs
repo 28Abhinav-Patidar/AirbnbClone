@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-8 offset-2">
             <br/>  
-    <form method="POST" action="/listing" class="mb-4 needs-validation" novalidate>
+    <form method="POST" action="/listing" class="mb-4 needs-validation" novalidate enctype="multipart/form-data">
             <div class="input-group mb-4">
         <span class="input-group-text" id="basic-addon1">Title</span>
         <input type="text" 
@@ -27,15 +27,13 @@
                 required>
             <div class="invalid-feedback">Description Requirede!</div>
         </div>
-
         <div class="mb-4">
-        <label for="basic-url" class="form-label">Your Image URL</label>
+        <label for="basic-url" class="form-label">Upload Image</label>
         <div class="input-group">
-            <input type="text"
-class="form-control"
-placeholder="Enter your image url/link"
-name="listing[image][url]"
-id="basic-url">
+            <input type="file"
+            class="form-control"
+            name="listing[image]"
+            id="basic-url">
         </div>
         </div>
         <div class="row">

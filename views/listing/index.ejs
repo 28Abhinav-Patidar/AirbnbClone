@@ -3,6 +3,127 @@
     <!-- <form method="GET" action="/listing/new">
         <button>Add listing</button>
     </form> -->
+
+<style>
+#filters{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+    gap: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    background-color: #f3f2eb;
+}
+
+.filter-container{
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    overflow-x: auto;
+    flex: 1;
+    scrollbar-width: none;
+}
+
+.filter-container::-webkit-scrollbar{
+    display: none;
+}
+
+.filter{
+    text-align: center;
+    opacity: 0.75;
+    min-width: 70px;
+    cursor: pointer;
+}
+
+.filter:hover{
+    opacity: 1;
+}
+
+.filter p{
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.tax-toggle{
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 1rem;
+    padding: 0.75rem 1rem;
+    min-width: 270px;
+    background-color: white;
+}
+
+.tax-toggle .form-check-input{
+    margin-left: auto;
+}
+.tax-info{
+  display: none;
+}
+</style>
+
+<div id="filters">
+
+    <div class="filter-container">
+
+        <div class="filter">
+            <i class="fa-solid fa-fire"></i>
+            <p>Trending</p>
+        </div>
+
+        <div class="filter">
+            <i class="fa-solid fa-bed"></i>
+            <p>Rooms</p>
+        </div>
+
+        <div class="filter">
+            <i class="fa-solid fa-mountain-city"></i>
+            <p>Iconic Cities</p>
+        </div>
+
+        <div class="filter">
+            <i class="fa-solid fa-mountain-sun"></i>
+            <p>Mountains</p>
+        </div>
+
+        <div class="filter">
+            <i class="fa-solid fa-umbrella"></i>
+            <p>Beach</p>
+        </div>
+
+        <div class="filter">
+            <i class="fa-solid fa-tractor"></i>
+            <p>Farms</p>
+        </div>
+
+        <div class="filter">
+            <i class="fa-brands fa-fort-awesome"></i>
+            <p>Castles</p>
+        </div>
+
+        <div class="filter">
+            <i class="fa-solid fa-snowflake"></i>
+            <p>Arctic</p>
+        </div>
+
+    </div>
+
+   <div class="form-check form-switch tax-toggle d-flex align-items-center">
+    <label class="form-check-label me-2" for="switchCheckDefault">
+        Display Total After Taxes
+    </label>
+
+    <input class="form-check-input ms-auto"
+           type="checkbox"
+           role="switch"
+           id="switchCheckDefault">
+</div>
+
+</div>
+
     <div class="mb-4">
   <div class="row justify-content-center">
     <% for (listing of allListing ) { %>
@@ -17,6 +138,7 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item">
                 Price : <b>&#8377;<%= listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %></b> /night
+                <i class="tax-info">&nbsp;&nbsp;&nbsp;+18% GST</i>
               </li>
               <li class="list-group-item">
                 Location : <%= listing.location %>
@@ -32,3 +154,13 @@
   </div>
 </div>
 </body>
+
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click" , ()=>{
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for(info of taxInfo){
+      info.style.display = taxSwitch.checked ?"inline":"none";
+    }
+  });
+</script>

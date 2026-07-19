@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-8 offset-2">
             <br/>
-    <form method="POST" action="/listing/<%= listing._id %>/edit?_method=PUT" novalidate class="mb-4 needs-validation">
+    <br method="POST" action="/listing/<%= listing._id %>/edit?_method=PUT" novalidate class="mb-4 needs-validation" enctype="multipart/form-data">
           <div class="input-group mb-4">
         <span class="input-group-text" id="basic-addon1">Title</span>
         <input type="text" name="listing[title]" class="form-control" value="<%= listing.title %>" aria-label="title" aria-describedby="basic-addon1" required>
@@ -15,11 +15,14 @@
         <textarea type="text" class="form-control" name="listing[description]" aria-label="description" aria-describedby="basic-addon2" required><%= listing.description %></textarea>
             <div class="invalid-feedback">Description Required!</div>
     </div>
+     <br class="mb-4">
+        <label for="basic-url" class="form-label">Old Image</label></br>
+         <img src="<%= originalURL %>"></br>
 
-        <div class="mb-4">
-        <label for="basic-url" class="form-label">Your Image URL</label>
+        <div class="mb-4 mt-3">
+        <label for="basic-url" class="form-label">Upload New Image</label>
         <div class="input-group">
-            <input type="text" class="form-control" value="<%= listing.image.url %>" name="listing[image][url]" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+            <input type="file" class="form-control"  name="listing[image]" id="basic-url" aria-describedby="basic-addon3 basic-addon4">
         </div>
         </div>
         <div class="row">

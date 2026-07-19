@@ -1,91 +1,121 @@
+// Trigger restart to load new env
+if (process.env.NODE_ENV != "production") {
+    require('dotenv').config();
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const Listing = require("./models/listing.js");
-const Review = require("./models/Reviews.js");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const AsyncWrap = require("./utils/Error.js");
 const ExpressError = require("./utils/ExpressError.js");
-const {listingSchema,reviewSchema} = require("./schema.js");
+const Session = require("express-session");
+const MongoStore = require("connect-mongo");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
 
-const listings = require("./routs/listing.js"); 
+const listingrouter = require("./routs/listing.js");
+const reviewrouter = require("./routs/review.js");
+const userrouter = require("./routs/user.js");
+const port = process.env.PORT || 4000;
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/Airbnb";
-main().then(()=>{
+const DB_URL = process.env.ATLASDB_URL;
+main().then(() => {
     console.log("DB connected")
-}).catch((err)=>{
+}).catch((err) => {
     console.log(err);
 });
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(DB_URL);
 };
 
-app.set("view engine","ejs");
-app.set("views",path.join(__dirname,"views"));
-app.use(express.urlencoded({extended :true}));
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
-app.engine("ejs",ejsMate);
-app.use(express.static(path.join(__dirname,"/public")));
+app.engine("ejs", ejsMate);
+app.use(express.static(path.join(__dirname, "/public")));
 
-app.get("/",(req,res)=>{
-    res.send("Namaste");
+const store = MongoStore.create({
+    mongoUrl: DB_URL,
+    touchAfter: 24 * 3600,
+    collectionName: "sessions",
 });
-const validatelisting = (req,res,next) =>{
-    let {error} = listingSchema.validate(req.body);
-    if(error){
-        let errmsg = error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errmsg);
-    }else{
-        next();
+
+store.on("error", (err) => {
+    console.log("SESSION STORE ERROR:", err);
+});
+const sessionOptions = {
+    store,
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
     }
-}
+};
 
-app.use("/listing",listings);
 
-const validatereview = (req,res,next) =>{
-    let {error} = reviewSchema.validate(req.body);
-    if(error){
-        let errmsg = error.details.map((el)=>el.message).join(",");
-        throw new ExpressError(400,errmsg);
-    }else{
-        next();
-    }
-}
-app.post("/listing/:id/review",validatereview ,AsyncWrap(async(req,res)=>{
-    let {id} = req.params;
-    let listing = await Listing.findById(id);
-    let newReview = new Review(req.body.review);
 
-    listing.reviews.push(newReview);
+app.use(Session(sessionOptions));
 
-    await newReview.save();
-    await listing.save();
-    res.redirect(`/listing/${id}`);
 
-}))
+app.use(flash());
 
-app.delete("/listing/:id/review/:reviewID",AsyncWrap(async(req,res)=>{
-    let {id,reviewID} = req.params;
-    await Listing.findByIdAndUpdate(id , {$pull :{reviews :reviewID}});
-    await Review.findByIdAndDelete(reviewID);
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
-    res.redirect(`/listing/${id}`);
-}))
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-app.use((req,res,next)=>{
-    next(new ExpressError(404,"page not found"));
+
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    res.locals.currUser = req.user;
+    next();
+});
+
+app.get("/demouser", async (req, res) => {
+    let fakeuser = new User({
+        email: "abhinav@gmail.com",
+        username: "Abhinav1223"
+
+    });
+    let reguser = await User.register(fakeuser, "nahipata");
+    res.send(reguser);
+});
+
+
+app.use("/listing", listingrouter);
+app.use("/listing/:id/review", reviewrouter);
+app.use("/", userrouter);
+
+app.get("/favicon.ico", (req, res) => {
+    res.status(204).end();
+});
+
+app.use((req, res, next) => {
+    next(new ExpressError(404, "Page Not Found!"));
 });
 
 app.use((err, req, res, next) => {
-    let {statusCode=500,message="Something went Wrong"} = err;
-    // const status = err.status || 500;
-    // const message = err.message || "Something went wrong";
-    // res.status(status).send(message);
-    res.status(statusCode).render("includes/Error" ,{message});
+    console.error("=== EXPRESS ERROR HANDLER TRIGGERED ===");
+    console.error(err);
+    console.error("=====================================");
+    let { statusCode = 500, message = "Something went Wrong!" } = err;
+
+    res.status(statusCode).render("includes/Error", { message });
 });
 
-app.listen(4000, ()=>{
-    console.log("server is running at port 4000");
+
+app.listen(port, () => {
+    console.log("Server is running on port", port);
 });

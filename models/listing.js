@@ -11,14 +11,8 @@ const listingSchema = new Schema({
 
   image: {
     filename: String,
-    url: {
-    type: String,
-    default: "https://i.ytimg.com/vi/J8s38BvX6iU/maxresdefault.jpg",
-    set: (v) =>
-      v === ""
-        ? "https://i.ytimg.com/vi/J8s38BvX6iU/maxresdefault.jpg"
-        : v
-  }},
+    url: String
+  },
 
   price: Number,
   location: String,
@@ -27,7 +21,11 @@ const listingSchema = new Schema({
   reviews:[{
     type : Schema.Types.ObjectId,
     ref :"Reviews",
-  }]
+  }],
+  owner:{
+    type:Schema.Types.ObjectId,
+    ref:"User"
+  }
 });
 
 listingSchema.post("findOneAndDelete", async(listing)=>{

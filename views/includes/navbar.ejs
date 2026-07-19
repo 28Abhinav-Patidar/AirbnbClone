@@ -1,14 +1,54 @@
-     <nav class="navbar navbar-expand-lg bg-dark bg-body-dark border-bottom sticky-top" data-bs-theme="dark">
+   <style>
+    .searchBtn{
+        color: #fff;
+        background-color: #fe424d;
+        border-radius:25px;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        border: none;
+    }
+    .searchBtn:hover{
+        color: #fff;
+        background-color: #fe424d;
+    }
+
+    .searchBtn i {
+        margin: 0;
+    }
+    .searchBox{
+        border-radius: 25px;
+        padding: 0.5rem 3rem 0.5rem 3rem;
+    }
+   </style>
+   
+   <nav class="navbar navbar-expand-lg bg-dark bg-body-dark border-bottom sticky-top" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand " href="/"><i class="fa-regular fa-compass"></i><span class="logo">Airbnb</span> </a>
+        <a class="navbar-brand " href="/listing"><i class="fa-regular fa-compass"></i><span class="logo">Airbnb</span> </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
         <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-link "  href="/">Home</a>
-            <a class="nav-link" href="/listing">All Listings</a>
-            <a class="nav-link" href="/listing/new">Add Listing</a>
+            <a class="nav-link" href="/listing">Explore</a>
+        </div>
+        <div class="navbar ms-auto">
+             <form class="d-flex" role="search">
+            <input class="form-control me-2 searchBox" type="search" placeholder="Search Destination" aria-label="Search"/>
+            <button class="btn searchBtn" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+             </form>
+        </div>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/listing/new">Airbnb your home</a>
+            <% if(!currUser){ %>
+            <a class="nav-link "  href="/signup"><b>Sign up </b></a>
+            <a class="nav-link" href="/login"><b>Login</b></a>
+            <% } %>
+            <% if(currUser){ %>
+            <a class="nav-link" href="/logout"><b>Logout</b></a>
+            <% } %>
         </div>
         </div>
     </div>
