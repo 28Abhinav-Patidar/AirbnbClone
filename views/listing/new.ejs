@@ -7,6 +7,7 @@
             <div class="input-group mb-4">
         <span class="input-group-text" id="basic-addon1">Title</span>
         <input type="text" 
+            id="title"
             name="listing[title]"
             class="form-control" 
             placeholder="Enter you title" 
@@ -16,17 +17,38 @@
             <div class="valid-feedback">Title looks good!</div>
             <div class="invalid-feedback">Title Requirede!</div>
         </div>
+        <div class="mb-4">
 
-        <div class="input-group mb-4">
-        <input type="text" 
-                class="form-control" 
-                name="listing[description]" 
-                placeholder="Description" 
-                aria-label="description" 
-                aria-describedby="basic-addon2" 
-                required>
-            <div class="invalid-feedback">Description Requirede!</div>
+    <div class="d-flex justify-content-between align-items-center mb-2">
+
+        <label class="form-label fw-bold">
+            Description
+        </label>
+
+        <button
+            type="button"
+            id="generateAI"
+            class="btn btn-outline-primary btn-sm">
+
+            ✨ Generate AI
+
+            </button>
+
         </div>
+
+        <textarea
+            id="description"
+            name="listing[description]"
+            class="form-control"
+            rows="5"
+            placeholder="Write description or generate it using AI..."
+            required></textarea>
+
+        <div class="invalid-feedback">
+            Description Required!
+        </div>
+
+    </div>
         <div class="mb-4">
         <label for="basic-url" class="form-label">Upload Image</label>
         <div class="input-group">
@@ -39,8 +61,8 @@
         <div class="row">
             <div class="col-md-4">
         <div class="input-group mb-4">
-        <span class="input-group-text"> Price : &#8377;</span>
-        <input name="listing[price]" class="form-control" aria-label="Amount" required>
+        <span class="input-group-text" > Price : &#8377;</span>
+        <input name="listing[price]" id="price" class="form-control" aria-label="Amount" required>
         <div class="invalid-feedback">Please enter valid price!</div>
         <span class="input-group-text">.00</span>
         </div>
@@ -48,6 +70,7 @@
          <div class="col-md-8">
          <div class="input-group mb-3">
             <input type="text" 
+                id="country"
                 name="listing[country]" 
                 class="form-control" 
                 placeholder="Country" 
@@ -58,7 +81,7 @@
         </div>
         </div>
        <div class="input-group mb-3">
-        <input type="text" name="listing[location]" class="form-control" placeholder="Location" aria-label="location" required>
+        <input type="text" id="location" name="listing[location]" class="form-control" placeholder="Location" aria-label="location" required>
         <div class="invalid-feedback">Please enter valid location!</div>
         </div>
         <button class="btn btn-primary">ADD</button>
@@ -66,4 +89,5 @@
         </form>
         </div>
     </div>
+    <script src="/js/ai.js"></script>
 </body>

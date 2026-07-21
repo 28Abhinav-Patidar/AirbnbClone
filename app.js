@@ -20,6 +20,8 @@ const User = require("./models/user.js");
 const listingrouter = require("./routs/listing.js");
 const reviewrouter = require("./routs/review.js");
 const userrouter = require("./routs/user.js");
+const aiRouter = require("./routs/ai");
+
 const port = process.env.PORT || 4000;
 
 const DB_URL = process.env.ATLASDB_URL;
@@ -35,6 +37,7 @@ async function main() {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
@@ -90,6 +93,7 @@ app.get("/", (req, res) => {
 app.use("/listing", listingrouter);
 app.use("/listing/:id/review", reviewrouter);
 app.use("/", userrouter);
+app.use("/ai", aiRouter);
 
 app.get("/favicon.ico", (req, res) => {
     res.status(204).end();
