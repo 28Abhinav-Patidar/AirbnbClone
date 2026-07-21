@@ -1,6 +1,6 @@
 const path = require("path");
 
-const controllerPath = require.resolve("../controllers/ai");
+const controllerPath = require.resolve("../Controllers/ai");
 
 const aiController = require("../controllers/ai");
 
