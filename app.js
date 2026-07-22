@@ -95,11 +95,19 @@ app.use("/listing/:id/review", reviewrouter);
 app.use("/", userrouter);
 app.use("/ai", aiRouter);
 
+app.get("/.well-known/appspecific/com.chrome.devtools.json", (req, res) => {
+    res.sendStatus(204);
+});
+
 app.get("/favicon.ico", (req, res) => {
     res.status(204).end();
 });
 
 app.use((req, res, next) => {
+    if (req.originalUrl === "/.well-known/appspecific/com.chrome.devtools.json") {
+        return next();
+    }
+
     console.log(`${req.method} ${req.originalUrl}`);
     next();
 });

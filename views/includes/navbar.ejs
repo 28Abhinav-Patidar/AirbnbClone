@@ -1,15 +1,18 @@
    <style>
-    .searchBtn{
-        color: #fff;
-        background-color: #fe424d;
-        border-radius:25px;
-        padding: 0.5rem 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        border: none;
-    }
+    .searchBtn {
+    color: #fff;
+    background-color: #fe424d;
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    white-space: nowrap;   
+    min-width: 120px;
+    font-size: 0.9rem;      
+}
     .searchBtn:hover{
         color: #fff;
         background-color: #fe424d;
@@ -21,6 +24,7 @@
     .searchBox{
         border-radius: 25px;
         padding: 0.5rem 3rem 0.5rem 3rem;
+        font-size: 0.9rem;
     }
    </style>
    
@@ -35,10 +39,20 @@
             <a class="nav-link" href="/listing">Explore</a>
         </div>
         <div class="navbar ms-auto">
-             <form class="d-flex" role="search">
-            <input class="form-control me-2 searchBox" type="search" placeholder="Search Destination" aria-label="Search"/>
-            <button class="btn searchBtn" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
-             </form>
+           <form id="aiSearchForm" class="d-flex" role="search">
+            <input
+                id="aiSearchInput"
+                class="form-control me-2 searchBox"
+                type="search"
+                placeholder="Search Destination"
+                aria-label="Search"
+                required
+            />
+            <button class="btn searchBtn" type="submit">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span class="d-none d-lg-inline">AI Search</span>
+            </button>
+        </form>
         </div>
         <div class="navbar-nav ms-auto">
             <a class="nav-link" href="/listing/new">Airbnb your home</a>

@@ -9,7 +9,7 @@ if (btn) {
         const price = document.getElementById("price").value;
 
         if (!title || !location || !country || !price) {
-            alert("Please fill Title, Location, Country and Price first.");
+            alert("Please fill all the required credintials!.");
             return;
         }
 
