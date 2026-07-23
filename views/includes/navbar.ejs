@@ -10,8 +10,11 @@
     gap: 0.5rem;
     border: none;
     white-space: nowrap;   
-    min-width: 120px;
-    font-size: 0.9rem;      
+    font-size: 0.9rem;  
+    min-width: 140px;
+    width: 140px;      
+    height: 42px;      
+    flex-shrink: 0;     
 }
     .searchBtn:hover{
         color: #fff;
@@ -39,19 +42,22 @@
             <a class="nav-link" href="/listing">Explore</a>
         </div>
         <div class="navbar ms-auto">
-           <form id="aiSearchForm" class="d-flex" role="search">
-            <input
+           <form id="aiSearchForm" class="d-flex" role="search" action="/ai/search" method="POST">
+           <input
                 id="aiSearchInput"
+                name="query"
                 class="form-control me-2 searchBox"
                 type="search"
                 placeholder="Search Destination"
                 aria-label="Search"
                 required
             />
-            <button class="btn searchBtn" type="submit">
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-                <span class="d-none d-lg-inline">AI Search</span>
-            </button>
+           <button class="btn searchBtn" id="aiSearchBtn" type="submit">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span id="aiSearchText" class="d-none d-lg-inline">
+                AI Search
+            </span>
+        </button>
         </form>
         </div>
         <div class="navbar-nav ms-auto">

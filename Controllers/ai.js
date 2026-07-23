@@ -47,17 +47,55 @@ module.exports.searchListings = async (req, res) => {
     try {
         const { query } = req.body;
 
-        const prompt = `
-You are an AI that extracts search filters for an Airbnb website.
+       const prompt = `
+You are an AI that extracts Airbnb search filters.
 
 Return ONLY valid JSON.
 
-Example:
+If the user's query is meaningless, random text, or you cannot confidently determine any filters, return:
 
 {
-  "location": "Goa",
-  "maxPrice": 5000,
-  "keywords": ["beach", "luxury"]
+  "location": "",
+  "maxPrice": null,
+  "keywords": []
+}
+
+Examples:
+
+User: Luxury hotel in Goa under 5000
+
+{
+  "location":"Goa",
+  "maxPrice":5000,
+  "keywords":["luxury","hotel"]
+}
+
+EXample 2 :
+
+User: hotel in Goa under budget
+
+{
+  "location":"Goa",
+  "maxPrice":5000,
+  "keywords":["hotel"]
+}
+
+EXample 2 :
+
+User: luxury house in jammu under budget
+
+{
+  "location":"jaammu",
+  "maxPrice":5000,
+  "keywords":["house stay","budget","luxury","jammu"]
+}
+
+User: dsxzcx
+
+{
+  "location":"",
+  "maxPrice":null,
+  "keywords":[]
 }
 
 User Query:
@@ -79,7 +117,6 @@ for (const model of models) {
             contents: prompt,
         });
 
-        console.log(`Using model: ${model}`);
         break;
 
     } catch (err) {
@@ -106,8 +143,17 @@ if (!response) {
         text = text.replace(/```json|```/g, "").trim();
 
         const filters = JSON.parse(text);
-
-        console.log("AI Filters:", filters);
+            if (
+            !filters.location &&
+            !filters.maxPrice &&
+            (!filters.keywords || filters.keywords.length === 0)
+        ) {
+            return res.render("listing/index.ejs", {
+                allListing: [],
+                aiQuery: query,
+                totalResults: 0
+            });
+        }
 
       const listings = await Listing.find({
     ...(filters.location && {
@@ -125,6 +171,7 @@ if (!response) {
 });
 
 // Optional keyword filtering
+// Optional keyword filtering
 let filteredListings = listings;
 
 if (filters.keywords?.length) {
@@ -139,14 +186,7 @@ if (filters.keywords?.length) {
 
     });
 
-    // If keyword filtering removes everything,
-    // return the location+price matches instead.
-    if (filteredListings.length === 0) {
-        filteredListings = listings;
-    }
 }
-
-console.log(`Found ${filteredListings.length} listing(s)`);
 
 return res.render("listing/index.ejs", {
     allListing: filteredListings,

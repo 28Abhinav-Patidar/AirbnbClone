@@ -1,23 +1,13 @@
 const form = document.getElementById("aiSearchForm");
+const btn = document.getElementById("aiSearchBtn");
 
-if (form) {
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+if (form && btn) {
+    form.addEventListener("submit", () => {
+        btn.disabled = true;
 
-        const query = document.getElementById("aiSearchInput").value;
-
-        const response = await fetch("/ai/search", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ query })
-        });
-
-        const html = await response.text();
-
-        document.open();
-        document.write(html);
-        document.close();
+        btn.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-2"></span>
+            Searching...
+        `;
     });
 }
